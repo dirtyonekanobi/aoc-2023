@@ -1,14 +1,21 @@
 <img src="./.assets/christmas_ferris.png" width="164">
 
-# 🎄 Advent of Code {year}
+# 🎄 Advent of Code 2023
 
 Solutions for [Advent of Code](https://adventofcode.com/) in [Rust](https://www.rust-lang.org/).
 
-<!--- advent_readme_stars table --->
+
+| Day Source | Solution | Part 1 | Part 2 |
+| --- | --- | --- | --- |
+| (https://adventofcode.com/2023/day/1) | [Day1 Solution](./src/bin/01.rs) | [x]| [x] |
+
 
 <!--- benchmarking table --->
 
 ---
+<details>
+<summary>Template Readme</summary>
+
 
 ## Template setup
 
@@ -229,3 +236,5 @@ Do you have aoc-specific crate recommendations? [Share them!](https://github.com
 
 [^5]:
     <img alt="Inspect debugger state" src="https://user-images.githubusercontent.com/1682504/198838373-36df6996-23bf-4757-9335-0bc4c1db0276.png" width="450" />
+
+</details>
