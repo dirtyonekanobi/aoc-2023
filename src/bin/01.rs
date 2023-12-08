@@ -1,11 +1,4 @@
-#[doc = " The current day."]
-const DAY:advent_of_code::Day = advent_of_code::day!(1);
-fn main(){
-  use advent_of_code::template::runner::*;
-  let input = advent_of_code::template::read_file("inputs",DAY);
-  run_part(part_one, &input,DAY,1);
-  run_part(part_two, &input,DAY,2);
-}
+advent_of_code::solution!(1);
 
 pub fn part_one(input: &str) -> Option<u32> {
     Some(
@@ -19,9 +12,59 @@ pub fn part_one(input: &str) -> Option<u32> {
     )
 }
 
-// pub fn part_two(input: &str) -> Option<u32> {
-//     None
-// }
+const NUMBER_WORDS: [&str; 9] = [
+    "one", "two", "three", "four", "five", "six", "seven", "eight", "nine",
+];
+
+fn find_first_number(s: &str) -> Option<u32> {
+    s.chars()
+        .enumerate()
+        .find_map(|(idx, _)| find_number_at_position(s, idx, false))
+}
+
+fn find_last_number(s: &str) -> Option<u32> {
+    s.char_indices()
+        .rev()
+        .find_map(|(idx, _)| find_number_at_position(s, idx, true))
+}
+
+fn find_number_at_position(s: &str, idx: usize, reverse: bool) -> Option<u32> {
+    if let Some(c) = s.chars().nth(idx) {
+        if c.is_ascii_digit() {
+            return c.to_digit(10);
+        }
+    }
+
+    for (i, word) in NUMBER_WORDS.iter().enumerate() {
+        let pattern = if reverse {
+            if idx + 1 < word.len() { continue; }
+            &s[idx + 1 - word.len()..=idx]
+        } else {
+            if idx + word.len() > s.len() { continue; }
+            &s[idx..idx + word.len()]
+        };
+
+        if pattern == *word {
+            return Some(i as u32 + 1);
+        }
+    }
+
+    None
+}
+
+pub fn part_two(input: &str) -> Option<u32> {
+    Some(
+        input
+            .lines()
+            .filter_map(|line| {
+                let first = find_first_number(line)?;
+                let last = find_last_number(line)?;
+                Some(first * 10 + last)
+            })
+            .sum()
+    )
+}
+
 
 #[cfg(test)]
 mod tests {
@@ -34,9 +77,11 @@ mod tests {
         assert_eq!(result, Some(142));
     }
 
-//     #[test]
-//     fn test_part_two() {
-//         let result = part_two(&advent_of_code::template::read_file("examples", DAY));
-//         assert_eq!(result, None);
-//     }
+     #[test]
+     fn test_part_two() {
+        let input = &advent_of_code::template::read_file_part("inputs", DAY, 2);
+         let result = part_two(input);
+         println!("{}", result.unwrap());
+         assert_eq!(result, Some(53515));
+     }
  }
